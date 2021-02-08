@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rypr/models/cliente.dart';
-import 'package:rypr/view/cadastroCliente.dart';
-import 'package:rypr/view/comporMensagem.dart';
-import 'package:rypr/view/home.dart';
-import 'package:rypr/view/listarClientes.dart';
+import 'package:Hypr/models/cliente.dart';
+import 'package:Hypr/view/cadastroCliente.dart';
+import 'package:Hypr/view/comporMensagem.dart';
+import 'package:Hypr/view/home.dart';
+import 'package:Hypr/view/listarClientes.dart';
+import 'package:Hypr/view/profile.dart';
 
 class MyBottomNavigator extends StatelessWidget {
   MyBottomNavigator({this.listSelected});
@@ -89,7 +90,10 @@ class MyBottomNavigator extends StatelessWidget {
               ),
               IconButton(
                 icon: Icon(Icons.person),
-                onPressed: null,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Profile()));
+                },
               ),
             ],
           ),

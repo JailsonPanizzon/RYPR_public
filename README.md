@@ -1,4 +1,4 @@
-# rypr
+# Hypr
 
 Uma ferramenta de Marketing para microempreendedores, auxiliando no relacionamento entre empresário e clientes, seguindo os cinco As de Philip Kotler (assimilação, Atração, Arguição, Ação e Apologia).
 

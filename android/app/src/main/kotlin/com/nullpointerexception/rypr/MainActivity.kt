@@ -1,4 +1,4 @@
-package com.nullpointerexception.rypr
+package com.nullpointerexception.Hypr
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

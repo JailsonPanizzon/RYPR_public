@@ -1,11 +1,16 @@
+import 'package:Hypr/view/listarClientes.dart';
+import 'package:Hypr/widget/customalert.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rypr/view/home.dart';
-import 'package:rypr/view/login.dart';
-import 'package:rypr/view/validarcodigo.dart';
-import 'package:sweetalert/sweetalert.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Hypr/models/cliente.dart';
+import 'package:Hypr/view/home.dart';
+import 'package:Hypr/view/login.dart';
+import 'package:Hypr/view/validarcodigo.dart';
+import 'package:contacts_service/contacts_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LoginBloc implements BlocBase {
   LoginBloc() {
@@ -28,6 +33,60 @@ class LoginBloc implements BlocBase {
         _localcontext, MaterialPageRoute(builder: (context) => Login()), (e) {
       return false;
     });
+  }
+
+  sincronizarContatos(BuildContext context) async {
+    if (await Permission.contacts.request().isGranted) {
+      customAlert(context,
+          title: "Sincronizando",
+          subtitle: "Adicionando contantos",
+          style: "loading", onPress: (bool isConfirm) {
+        Navigator.pop(context);
+      });
+      int contErro = 0;
+      int contSucess = 0;
+      Iterable<Contact> contacts =
+          await ContactsService.getContacts(withThumbnails: false);
+      List<Cliente> listClientes = [];
+      contacts.forEach((contato) {
+        listClientes.add(
+          Cliente(
+              sexo: "",
+              faixaEtaria: "",
+              idOwner: user.uid,
+              endereco: contato.postalAddresses.length > 0
+                  ? contato.postalAddresses?.first?.city
+                  : "",
+              nome: contato?.displayName,
+              telefone: contato.phones.length > 0
+                  ? contato?.phones?.first?.value
+                  : "",
+              email: contato.emails.length > 0
+                  ? contato?.emails?.first?.value
+                  : ""),
+        );
+      });
+      for (var cliente in listClientes) {
+        await Firestore.instance
+            .collection('cliente')
+            .document()
+            .setData(cliente.toJson())
+            .catchError((e) {
+          contErro += 1;
+        }).then((e) {
+          contSucess += 1;
+        });
+      }
+      Navigator.pop(context);
+      customAlert(context,
+          title: "Sucesso",
+          subtitle: "$contSucess conatatos adicionados, $contErro falharam",
+          style: "success", onPress: (bool isConfirm) {
+        Navigator.pop(context);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ListarClientes()));
+      });
+    }
   }
 
   Future<FirebaseUser> getUser() async {
@@ -56,11 +115,11 @@ class LoginBloc implements BlocBase {
     _localcontext = context;
     phone = "+55" + phone;
     try {
-      SweetAlert.show(_localcontext,
+      customAlert(_localcontext,
           title: "Autenticando",
           subtitle: "Verificando número de telefone",
-          style: SweetAlertStyle.loading, onPress: (bool isConfirm) {
-        return true;
+          style: "loading", onPress: (bool isConfirm) {
+        Navigator.pop(context);
       });
       firebaseAuth.verifyPhoneNumber(
           phoneNumber: phone,
@@ -77,21 +136,23 @@ class LoginBloc implements BlocBase {
 
   _codeSent(String verificationId, [int forceResendingToken]) async {
     _actualCode = verificationId;
-    SweetAlert.show(_localcontext,
+    Navigator.pop(_localcontext);
+    customAlert(_localcontext,
         title: "Autenticando",
         subtitle: "Obtendo código de autenticação",
-        style: SweetAlertStyle.loading, onPress: (bool isConfirm) {
-      return true;
+        style: "loading", onPress: (bool isConfirm) {
+      Navigator.pop(_localcontext);
     });
   }
 
   _codeAutoRetrievalTimeout(String verificationId) {
     _actualCode = verificationId;
-    SweetAlert.show(_localcontext,
+    Navigator.pop(_localcontext);
+    customAlert(_localcontext,
         title: "Sem acesso aos SMS",
         subtitle:
             "Não foi possivel ter acesso automaticamente ao código enviado por SMS, deseja adicionar manualmente?",
-        style: SweetAlertStyle.confirm,
+        style: "confirm",
         confirmButtonText: "Sim",
         cancelButtonText: "Não",
         showCancelButton: true, onPress: (bool isConfirm) {
@@ -106,7 +167,7 @@ class LoginBloc implements BlocBase {
 
   _verificationFailed(AuthException authException) {
     String status = '${authException.message}';
-
+    print(authException.message);
     if (authException.message.contains('not authorized'))
       status = 'Ocorreu um erro, tente novamente mais tarde';
     else if (authException.message.contains('Network'))
@@ -126,33 +187,39 @@ class LoginBloc implements BlocBase {
         onFailAuthentication('Código expirado ou inválido');
       }
     }).catchError((error) {
+      print(error);
       onFailAuthentication('Ocorreu um erro, tente novamente mais tarde');
     });
   }
 
   void signInWithPhoneNumber(String smsCode, BuildContext context) async {
     _localcontext = context;
-    SweetAlert.show(_localcontext,
+    customAlert(_localcontext,
         title: "Autenticando",
         subtitle: "Validando código",
-        style: SweetAlertStyle.loading, onPress: (bool isConfirm) {
-      return true;
+        style: "loading", onPress: (bool isConfirm) {
+      Navigator.pop(context);
     });
     _authCredential = PhoneAuthProvider.getCredential(
         verificationId: _actualCode, smsCode: smsCode);
-    firebaseAuth.signInWithCredential(_authCredential).catchError((error) {
+    try {
+      firebaseAuth.signInWithCredential(_authCredential).catchError((error) {
+        print(error);
+        onFailAuthentication('Ocorreu um erro, tente novamente mais tarde');
+      }).then((AuthResult onValue) {
+        onAuthenticationSuccessful();
+      });
+    } catch (e) {
+      print(e);
       onFailAuthentication('Ocorreu um erro, tente novamente mais tarde');
-    }).then((AuthResult onValue) {
-      onAuthenticationSuccessful();
-    });
+    }
   }
 
   onFailAuthentication(String error) {
-    SweetAlert.show(_localcontext,
-        title: "Falha",
-        subtitle: error,
-        style: SweetAlertStyle.error, onPress: (bool isConfirm) {
-      return true;
+    Navigator.pop(_localcontext);
+    customAlert(_localcontext, title: "Falha", subtitle: error, style: "error",
+        onPress: (bool isConfirm) {
+      Navigator.pop(_localcontext);
     });
   }
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:rypr/bloc/send.dart';
-import 'package:rypr/bloc/listarClientes.dart';
-import 'package:rypr/bloc/login.dart';
-import 'package:rypr/bloc/salvarCliente.dart';
-import 'package:rypr/config/theme.dart';
+import 'package:Hypr/bloc/send.dart';
+import 'package:Hypr/bloc/listarClientes.dart';
+import 'package:Hypr/bloc/login.dart';
+import 'package:Hypr/bloc/salvarCliente.dart';
+import 'package:Hypr/config/theme.dart';
 
-import 'package:rypr/view/splash.dart';
+import 'package:Hypr/view/splash.dart';
 
 void main() => runApp(MyApp());
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rypr/models/cliente.dart';
-import 'package:rypr/view/detalheCliente.dart';
+import 'package:Hypr/models/cliente.dart';
+import 'package:Hypr/view/detalheCliente.dart';
 
 class ItemList extends StatelessWidget {
   ItemList({this.cliente, this.selected, this.onSelect});
@@ -25,7 +25,7 @@ class ItemList extends StatelessWidget {
           Row(
             children: <Widget>[
               Container(
-                width: width * .2,
+                width: width * .15,
                 margin: EdgeInsets.only(right: width * .02),
                 child: Icon(
                   Icons.person_pin,
@@ -33,7 +33,7 @@ class ItemList extends StatelessWidget {
                 ),
               ),
               Container(
-                width: width * .7,
+                width: width * .65,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -50,12 +50,12 @@ class ItemList extends StatelessWidget {
                         style: Theme.of(context).textTheme.body2),
                   ],
                 ),
-              )
+              ),
+              selected != null
+                  ? Checkbox(value: selected, onChanged: onSelect)
+                  : Container(),
             ],
           ),
-          selected != null
-              ? Checkbox(value: selected, onChanged: onSelect)
-              : Container(),
           SizedBox(
             height: 20,
           ),

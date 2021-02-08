@@ -18,7 +18,8 @@ class CustomButtom extends StatelessWidget {
     return RaisedButton(
       padding: EdgeInsets.all(0.0),
       onPressed: onPress,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Container(
         height: 60,
         decoration: BoxDecoration(

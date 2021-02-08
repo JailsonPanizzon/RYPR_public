@@ -21,11 +21,20 @@ ThemeData themeData = ThemeData(
     title: TextStyle(
       color: Colors.black,
       fontFamily: "Comfortaa",
-      fontSize: 36,
+      fontSize: 30,
     ),
-    subhead: TextStyle(color: Colors.orange),
+    subhead: TextStyle(color: Colors.black),
     subtitle: TextStyle(color: Colors.purple),
     button: TextStyle(
         color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0),
+    ),
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0),
+    ),
+    labelStyle: TextStyle(color: Colors.black),
   ),
 );

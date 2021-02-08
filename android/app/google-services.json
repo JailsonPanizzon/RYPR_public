@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:854415858543:android:8e87b7c10b45126553669a",
+        "android_client_info": {
+          "package_name": "com.nullpointerexception.Hypr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854415858543-elmbb8thgh39oke1oddjfri1hhi9cbil.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nullpointerexception.Hypr",
+            "certificate_hash": "b072586b3505bd54d28fdaf77d3b1c3f8a070c10"
+          }
+        },
+        {
+          "client_id": "854415858543-d4b6bgvkr9hn6uu938sb3jsa101lng2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtY1Qf8X73r7YxuFnyMbTXdTqsvtuEsvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854415858543-d4b6bgvkr9hn6uu938sb3jsa101lng2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:854415858543:android:965e78abdcee60f453669a",
         "android_client_info": {
           "package_name": "com.nullpointerexception.marketingmicroservice"
@@ -29,7 +66,7 @@
       ],
       "api_key": [
         {
-          "current_key": ""
+          "current_key": "CURRENT KEY"
         }
       ],
       "services": {
@@ -66,7 +103,7 @@
       ],
       "api_key": [
         {
-          "current_key": ""
+          "current_key": "CURRENT KEY"
         }
       ],
       "services": {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rypr/bloc/login.dart';
+import 'package:Hypr/bloc/login.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:rypr/view/cadastroCliente.dart';
-import 'package:rypr/view/listarClientes.dart';
+import 'package:Hypr/view/cadastroCliente.dart';
+import 'package:Hypr/view/listarClientes.dart';
 
 class MenuLateral extends StatelessWidget {
   static LoginBloc bloc = BlocProvider.getBloc<LoginBloc>();
